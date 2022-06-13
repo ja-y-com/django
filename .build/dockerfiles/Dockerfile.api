@@ -1,0 +1,16 @@
+FROM        python:3.9
+
+# 라이브러리 설치
+RUN         apt-get update -y
+COPY        ./requirements/requirements.api.txt /app/requirements.txt
+RUN         pip install -U pip
+RUN         pip install -r /app/requirements.txt
+
+# 프로젝트 폴더로 이동
+WORKDIR     /app
+
+# 프로젝트 실행
+# CMD         python manage.py migrate; python manage.py collectstatic --no-input; gunicorn conf.wsgi:application --bind 0.0.0.0:80 --log-level debug
+CMD         python manage.py migrate; python manage.py collectstatic --no-input; python manage.py runserver 0:80
+
+EXPOSE      80
